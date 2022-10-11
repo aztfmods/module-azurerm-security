@@ -2,9 +2,8 @@
 # Resourcegroups
 #----------------------------------------------------------------------------------------
 
-resource "azurerm_resource_group" "rg" {
-  name     = var.ddos_plan.resourcegroup
-  location = var.ddos_plan.location
+data "azurerm_resource_group" "rg" {
+  name = var.ddos_plan.resourcegroup
 }
 
 #----------------------------------------------------------------------------------------
@@ -15,6 +14,6 @@ resource "azurerm_network_ddos_protection_plan" "ddos_plan" {
   count   = var.ddos_plan.create ? 1 : 0
 
   name                = "plan-ddos-${var.naming.company}-${var.naming.env}-${var.naming.region}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
 }
